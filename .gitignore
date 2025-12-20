@@ -1,0 +1,4 @@
+model/*
+dataset/*
+*.wav
+*.mp3
