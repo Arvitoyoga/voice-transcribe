@@ -4,15 +4,14 @@ import sounddevice as sd
 import json
 import os
 from vosk import Model, KaldiRecognizer
-from df.enhance import enhance, init_df, load_audio, save_audio
-import numpy as np
+
 import time
-import torch
-# from torchaudio.backend.common import AudioMetaData
+
 
 MODEL = "vosk-model-small-en-us-0.15"
 model_path = "model/" + MODEL 
-SAMPLE_RATE = 16000
+SAMPLE_RATE = 48000
+buf_time = [0, 0]
 
 COMMAND = ['payload', 'camera', 'switch']
 VALUE = ['alpha', 'beta', 'delta']
@@ -30,46 +29,17 @@ q = queue.Queue()
 
 
 
-df_model, df_state, _ = init_df()
-# Load DeepFilterNet (this will download models on first run)
-df_model, df_state, _ = init_df()
-
-# Load Vosk
-if not torch.cuda.is_available():
-    print("Running on CPU. DeepFilterNet might be slow.")
-else:
-    print("CUDA available. DeepFilterNet will be fast.")
-
-
-
 def audio_callback(indata, frames, time, status):
-    """
-    1. Capture at 48kHz (Required by DeepFilterNet)
-    2. Enhance (Remove Drone Noise)
-    3. Downsample to 16kHz (Required by Vosk)
-    """
-    # Convert to torch tensor
-    audio = torch.from_numpy(indata.copy()).float().mean(dim=1).unsqueeze(0) # Convert to mono
-    
-    # Run through DeepFilterNet
-    enhanced = enhance(df_model, df_state, audio)
-    
-    # Convert back to numpy
-    enhanced_np = enhanced.squeeze().numpy()
-    
-    # Downsample from 48k to 16k for Vosk
-    # We take every 3rd sample (48000 / 3 = 16000)
-    downsampled = enhanced_np[::3]
-    
-    # Convert to Int16 for Vosk
-    final_audio = (downsampled * 32768).astype(np.int16)
-    
-    q.put(final_audio.tobytes())
+    if status:
+        print(status, file=sys.stderr)
+    q.put(bytes(indata))
+
+
 
 def run():
-    
+    # State tracking
     buffer = {"command": None, "value": None}
-    buf_time = [0.0]  
+    buf_time = [0.0]  # Using a list to keep it mutable if needed
     last_state = ""   
 
     with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=4000, dtype='int16',
@@ -79,7 +49,6 @@ def run():
         
         while True:
             data = q.get()
-
 
             if buffer["command"] and not buffer["value"]:
                 elapsed = time.time() - buf_time[0]
@@ -102,7 +71,6 @@ def run():
             
             for word in words:
                 if word in COMMAND:
-                    # Only update and print if it's a NEW command or a change
                     if buffer["command"] != word:
                         buffer["command"] = word
                         buffer["value"] = None 
@@ -110,26 +78,22 @@ def run():
                         print(f"\n-> Command identified: {word}")
 
                 elif word in VALUE:
-                    # Only update if we have a command and it's a new value
                     if buffer["command"] and buffer["value"] != word:
                         buffer["value"] = word
                         print(f"\n-> Value identified: {word}")
 
-            # 4. EXECUTION LOGIC
             if buffer["command"] and buffer["value"]:
                 cmd = buffer["command"]
                 val = buffer["value"]
                 
                 print(f"\n[!] EXECUTE: {cmd.upper()} {val.upper()}")
                 
-                # Success! Reset everything
                 buffer = {"command": None, "value": None}
                 buf_time[0] = 0.0
                 rec.Reset() 
                 print("Ready for next command...")
             
             else:
-                # 5. UI FEEDBACK (Prevents duplicate line spam)
                 c = buffer["command"] if buffer["command"] else "???"
                 v = buffer["value"] if buffer["value"] else "???"
                 current_state_string = f"Buffer: [{c}] + [{v}]"
