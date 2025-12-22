@@ -119,7 +119,6 @@ def run():
                 val = buffer["value"]
                 
                 print(f"\n[!] EXECUTE: {cmd.upper()} {val.upper()}")
-                # ser.write()
                 send_serial(ser, cmd, val)
                 buffer = {"command": None, "value": None}
                 buf_time[0] = 0.0
