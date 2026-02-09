@@ -8,8 +8,8 @@ import time
 import serial
 
 USE_MIC = True  
-USE_SERIAL = False
-SERIAL_PORT = "/dev/ttyUSB0"
+USE_SERIAL = True
+SERIAL_PORT = "/dev/ttyS1"
 BAUD_RATE = 9600
 
 MODEL_PATH = "model/vosk-model-en-us-0.22-lgraph"
@@ -20,9 +20,13 @@ ERROR = 0 #data yang dikirim jika terjadi error (trash word detected, urutan sal
 
 
 ACTION_MAP = {
-    "distribute": { # D, deliver / payload
-        "scarlet": 2, 
-        "cobalt":   3
+    "distribute": {     # D, deliver / payload
+        "scarlet": 2,   # drop first side
+        "cobalt":   3,  # drop second side
+        "fertilizer": 6,  # reset tatakan
+        "climate":    7,  # reset mekanisme atas
+        "alphabet":   8,  # load payload
+        "triangle":   9   # rotate drone
     },
     "virginia": { # V, video / cam switch
         "scarlet":   4, 
@@ -31,7 +35,6 @@ ACTION_MAP = {
         "scarlet":  5 # 
     }
 }
-
 
 TRAP_PHRASES = [
     "go bold", 
@@ -137,6 +140,36 @@ TRAP_WORDS = [ #buang beberapa kata kalau susah di detek (distribute kedetek dis
     "one", "two", "three", "four", "five", # Numbers are often confused with syllables
     "six", "seven", "eight", "nine", "ten",
     "error", "fire", "fail", "cancel",  "reset",
+
+    # --- TRAPS FOR 'FERTILIZER' ---
+    "fertile", "fertility", "fertilize", "fertilized",
+    "utilizer", "initializer", "stabilizer", "neutralizer",
+    "analyzer", "finalizer", "catalyzer",
+    "filter", "feature", "future",
+    "fertile soil", "fertilizer spread",
+
+    # --- TRAPS FOR 'ALPHABET' ---
+    "alpha", "beta", "alphabetical",
+    "outfit", "albatross",
+    "elizabeth", "alfabet",   # campuran EN–ID
+    "alphabet soup",
+    "bet", "better", "about it",
+
+    # --- TRAPS FOR 'CLIMATE' ---
+    "climb it", "client", "climax", "climate change",
+    "limit", "commit", "comment",
+    "climb", "claimed", "claim it",
+    "private", "pilot",
+
+    # --- TRAPS FOR 'TRIANGLE' ---
+    "triangular", "trial", "triangle shape",
+    "angle", "angel", "ankle",
+    "translate", "travel", "transfer",
+    "turn angle", "right angle",
+
+
+
+
 
 
 
