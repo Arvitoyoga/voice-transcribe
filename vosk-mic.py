@@ -28,6 +28,165 @@ ACTION_MAP = {
 
 TRAP_WORDS_LIST = [
     "district", "disturb", "[unk]", "the", "is", "stop"
+
+# # --- 1. TRAPS FOR "DISTRIBUTE" ---
+# # Sound-alikes: "Dis-" start or "-bute" end
+# "district", "disturb", "dispute", "display", "distinct",
+# "attribute", "contribute", "statute",
+
+# "this", "tree", "three", "street", "mute", "but",
+
+# # Variations
+# "distribution",
+
+# # -tute endings
+# "destitute", "institute", "constitute", "prostitute",
+
+# # Strong "str"
+# "street", "straight", "strut", "strip",
+
+# # soft "sh"
+# "dish", "fish", "wish",
+
+# # "bute"
+# "boot", "root", "shoot",
+
+# # phrases
+# "this three", "is three", "tree root",
+
+
+# # --- 2. TRAPS FOR "SCARLET" ---
+# # Sound-alikes: "skar-" or "-let"
+#  "charlotte", "harlot", "varlet",
+
+# "scar", "star", "car", "far", "bar",
+
+# "let", "net", "set", "bet", "wet",
+
+# "wallet", "bullet", "skillet", "toilet", "pilot",
+
+# "garlic", "target", "market", "carpet",
+
+# "skeleton", "scatter", "scholar",
+
+# "starlit", "harlot", "varlet",
+
+# "scared", "sacred", "scary", "score",
+
+# # rhymes
+# "skillet", "spill it", "kill it", "still it",
+
+# # -erl sound
+# "carl", "earl", "pearl", "girl",
+
+# # rhythm traps
+# "solid", "salad", "valid", "pallid",
+
+# "cigarrete", "carrot", "carpet", "secret", "circuit",
+
+
+# # --- 3. GENERAL NOISE / COMMON WORDS ---
+# "the", "a", "an", "it", "is", "to", "in", "on", "at", "of",
+# "and", "that", "this", "no", "yes", "stop", "go", "up",
+# "okay", "hey", "hi", "hello", "right", "left",
+
+
+# # --- 4. DRONE RELATED WORDS ---
+# "battery", "voltage", "signal", "gps", "mode",
+# "stable", "hover", "launch", "land", "arm", "disarm",
+# "ready", "check", "clear", "prop", "motor",
+
+# # numbers
+# "one", "two", "three", "four", "five",
+# "six", "seven", "eight", "nine", "ten",
+
+# "error", "fire", "fail", "cancel", "reset",
+
+
+# # --- 5. TRAPS FOR "FERTILIZER" ---
+# "fertile", "fertility", "fertilize", "fertilized",
+
+# "utilizer", "initializer", "stabilizer",
+# "neutralizer", "analyzer", "finalizer", "catalyzer",
+
+# "filter", "feature", "future",
+
+# "fertile soil", "fertilizer spread",
+
+
+# # --- 6. TRAPS FOR "CLEARANCE" ---
+# "clear", "cleared", "clearing", "clears",
+
+# "clarence", "clarens", "clarance", "clarity",
+# "clearens", "clearancee",
+
+# "appearance", "adherence", "reference",
+# "conference", "difference",
+
+# "insurance", "assurance", "tolerance",
+
+
+# # --- 7. TRAPS FOR "BLACKY" ---
+# "black", "blackie", "blaki", "blaccy",
+
+# "blucky", "block", 
+# "blank", "bleaky", "bleak",
+
+# "blue", "blink", "blip", "bless", "blade", "blame",
+
+# "blood", "blur",
+
+# "lucky", "rocky", "jackie", "macky", "backy",
+
+# "black key", "black tea", "blacky please",
+
+
+# # --- 8. TRAPS FOR "EVENING" ---
+# "even", "evenin", "evened", "evenly",
+
+# "eveningg",
+
+# "event", "events",
+
+# "evan", "evans", "evin",
+
+# "earning", "heaven",
+
+# "good evening", "evening sir", "evening all", "evening mode",
+
+
+# # --- 9. TRAPS FOR "SELECTION" ---
+# "select", "selected", "selecting", "selections", "selectional",
+
+# "election", "reflection", "collection",
+# "direction", "inspection",
+# "protection", "connection",
+
+# "section", "sections",
+
+# "session", "sessions",
+
+# "seduction", "solution", "salvation",
+
+# "selection mode", "select one",
+
+
+# # --- 10. TRAPS FOR "VEHICLE" ---
+# "vehical", "vehikle", "vehicl",
+
+# "vertical", "critical", "physical",
+
+# "article", "miracle", "medical", "digital",
+
+# "vega", "vegas", "vigor",
+
+# "visual", "vision",
+
+# "vehicle mode", "vehicle switch",
+
+
+# # --- UNKNOWN TOKEN ---
+# "[unk]"
 ]
 
 TRAP_WORDS = set(TRAP_WORDS_LIST)
